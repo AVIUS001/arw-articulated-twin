@@ -3,37 +3,38 @@
 from __future__ import annotations
 
 import json
-import math
 import sys
 from pathlib import Path
 
 import numpy as np
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
 from arw_articulated_twin.allocator import allocate_hover
-from arw_articulated_twin.effectiveness import build_b_matrix, sweep_articulation
+from arw_articulated_twin.effectiveness import build_b_matrix
 from arw_articulated_twin.env import ArticulatedHoverEnv, EnvConfig
 from arw_articulated_twin.geometry import VEHICLES
 from arw_articulated_twin.rotor_model import rpm_to_omega, thrust_from_omega
 from arw_articulated_twin.snidget_params import derive_k_t, provenance_table
 from arw_articulated_twin.warp_kernels import backend_name, compute_thrusts_gpu
 
+from check_gradients import (
+    check_articulation_varies,
+    check_finite_difference_gradient,
+    check_warp_autodiff,
+)
+
 
 def check_b_articulation() -> dict:
-    betas = np.linspace(0, 25, 26)
-    sweep = sweep_articulation("AER8110-1", betas)
-    cond_at_zero = sweep[0]["condition_number"]
-    cond_at_max = sweep[-1]["condition_number"]
-    # σ ceiling 30 per ITP — on hover-relevant 4×4 Gram block (Fz + moments)
-    passed = cond_at_max < 30.0
-    # Articulation should change authority (spread) monotonically at outer stations
-    spread_increases = sweep[-1]["sigma_max"] >= sweep[0]["sigma_max"] * 0.95
-    passed = passed and spread_increases
+    """B(q_art) must genuinely vary with β — not a flat conditioning line."""
+    result = check_articulation_varies("AER8110-1", min_rel_change=0.02)
     return {
         "name": "B(q_art) sweep",
-        "passed": passed,
-        "cond_at_0deg": cond_at_zero,
-        "cond_at_25deg": cond_at_max,
-        "sigma_ceiling_ok": cond_at_max < 30.0,
+        "passed": result["passed"],
+        "cond_at_0deg": result["cond_0deg"],
+        "cond_at_25deg": result["cond_25deg"],
+        "rel_change": result["rel_change"],
+        "sigma_ceiling_ok": result["ceiling_ok"],
     }
 
 
@@ -84,20 +85,19 @@ def check_articulation_maneuver() -> dict:
     env = ArticulatedHoverEnv(EnvConfig(vehicle_code="AER8110-1", domain_randomization=False))
     action = env.reference_hover_action()
     annuli = list(env.beta.keys())
-    # Command 15° ring cant on first annulus
     action[len(env.states) + 0] = 15.0
     _, _, _, info = env.step(action)
     passed = abs(env.beta[annuli[0]] - 15.0) < 0.1 and info["sigma_max"] > 0
     return {"name": "Articulation maneuver (+15°)", "passed": passed, "beta": env.beta}
 
 
-def check_scaling_152() -> dict:
-    """19 → 152 rotor scaling sanity (4× AER8100 annuli)."""
+def check_scaling_76() -> dict:
+    """AER8100-1 full-scale quad ring-wing (76 rotors)."""
     v = VEHICLES["AER8100-1"]
     eff = build_b_matrix(v.code)
     passed = eff.b_matrix.shape == (6, 76)
     return {
-        "name": "152-rotor (76×2 logical) B matrix",
+        "name": "76-rotor scaling (AER8100-1)",
         "passed": passed,
         "shape": list(eff.b_matrix.shape),
         "condition_number": eff.condition_number,
@@ -108,11 +108,13 @@ def main() -> int:
     checks = [
         check_snidget_k_t(),
         check_b_articulation(),
+        check_finite_difference_gradient(),
+        check_warp_autodiff(),
         check_hover_trim(),
         check_warp_thrust(),
         check_hover_env(),
         check_articulation_maneuver(),
-        check_scaling_152(),
+        check_scaling_76(),
     ]
     report = {"checks": checks, "provenance_rows": len(provenance_table()), "all_passed": all(c["passed"] for c in checks)}
 
@@ -122,7 +124,8 @@ def main() -> int:
 
     for c in checks:
         status = "PASS" if c["passed"] else "FAIL"
-        print(f"  [{status}] {c['name']}")
+        skip = " (skipped)" if c.get("skipped") else ""
+        print(f"  [{status}] {c['name']}{skip}")
 
     return 0 if report["all_passed"] else 1
 
