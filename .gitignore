@@ -1,0 +1,9 @@
+.DS_Store
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+validation_report.json
+*.egg-info/
+dist/
+build/

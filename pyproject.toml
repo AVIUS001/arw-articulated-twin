@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "arw-articulated-twin"
+version = "0.1.0"
+description = "ARW Articulated Ring-Wing digital twin — Isaac Sim 6.0 + Newton (I.C.2E Snidget propulsion)"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.10"
+authors = [{ name = "Aerial MECHANICA / AVIUS" }]
+dependencies = [
+  "numpy>=1.24",
+  "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+warp = ["warp-lang>=1.0.0"]
+isaac = ["isaaclab>=2.0.0"]
+dev = ["pytest>=7.0", "pandas>=2.0"]
+
+[project.scripts]
+arw-build-assets = "scripts.build_assets:main"
+arw-validate = "scripts.validate:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["arw_articulated_twin*", "scripts*"]

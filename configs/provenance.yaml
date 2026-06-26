@@ -1,0 +1,115 @@
+# Provenance-labeled parameter table (§7)
+# Default public posture: Modeled wherever possible.
+
+parameters:
+  - name: primary_motor_pn
+    value: AV5008TM-HV
+    unit: ""
+    provenance: Measured
+    source: I-C2E Snidget Datasheet Rev D
+
+  - name: primary_motor_bus_v
+    value: 74.0
+    unit: V
+    provenance: Measured
+    source: Bench cluster IC2E_SNIDGET_REV_D
+
+  - name: tau_e
+    value: 0.007
+    unit: s
+    provenance: Measured
+    source: Datasheet mechanical time constant (HV) — replaces Maxon EC 69 reference
+
+  - name: propulsor_od
+    value: 0.70716
+    unit: m
+    provenance: Measured
+    source: AER8120 Fusion CAD / datasheet
+
+  - name: hub_od
+    value: 0.26416
+    unit: m
+    provenance: Measured
+    source: Snidget interface drawing
+
+  - name: inner_spool_id
+    value: 0.12
+    unit: m
+    provenance: Measured
+    source: Rev D configuration CSV
+
+  - name: inner_spool_od
+    value: 0.18
+    unit: m
+    provenance: Measured
+    source: Rev D configuration CSV
+
+  - name: inner_rpm_nominal
+    value: 9000
+    unit: rpm
+    provenance: Measured
+    source: Bench rating summary
+
+  - name: pressure_ratio_nominal
+    value: 1.018
+    unit: ratio
+    provenance: Measured
+    source: Rev D PR envelope (not high-PR concept)
+
+  - name: k_T
+    unit: N/(rad/s)^2
+    provenance: Reconstructed
+    source: steady_state_bench_map.csv @ 3000 rpm, diameter-scaled
+    note: Cleared generic form — not passenger-scale validated coefficients
+
+  - name: k_Q
+    unit: Nm/(rad/s)^2
+    provenance: Modeled
+    source: Q_nom / ω² from datasheet nominal torque
+
+  - name: articulation_beta_limit
+    value: 25
+    unit: deg
+    provenance: Modeled
+    source: Reference hinge travel for public twin
+
+  - name: B_spread_k
+    value: 0.62
+    unit: ""
+    provenance: Modeled
+    source: Generic articulation authority coupling
+
+  - name: ARW19_mass
+    value: 19.2
+    unit: kg
+    provenance: Measured
+    source: vehicle_configurations.csv (flight test article)
+
+  - name: ARW38_mass
+    value: 78.0
+    unit: kg
+    provenance: Measured
+    source: vehicle_configurations.csv
+
+  - name: AER8100_mass
+    value: 1210.0
+    unit: kg
+    provenance: Modeled
+    source: AER8100-1 quad ring-wing target scaling
+
+vehicles:
+  AER8110-1:
+    cad: "AER8110-1 RING-WING ASSY - 19X PROPULSION UNITS SET A"
+    rotors: 19
+    blade_count: 2
+    diameter_m: 0.432
+  AER8110-2:
+    cad: "AER8110-2 RING-WING ASSY - 19X PROPULSION UNITS SET B"
+    rotors: 38
+    blade_count: 3
+    diameter_m: 0.432
+  AER8100-1:
+    cad: "AER8100-1 AIRCRAFT ASSY - AERIAL8 QUAD RING-WING EVTOL"
+    rotors: 76
+    blade_count: 3
+    diameter_m: 1.12

@@ -1,0 +1,999 @@
+#usda 1.0
+(
+  custom string arw:vehicleCode = "AER8110-2"
+  custom string arw:cadDrawing = "AER8110-2 RING-WING ASSY - 19X PROPULSION UNITS SET B"
+  custom int arw:rotorCount = 38
+  custom string arw:propulsion = "I-C2E Snidget Rev D (AV5008TM-HV)"
+  custom string license = "Apache-2.0"
+  custom string notice = "Patent-pending articulation control — reference allocator only"
+)
+
+def Xform "ARW" (
+  uniform token physics:approximation = "none"
+  custom vector3f physics:gravity = (0, 0, -9.81)
+)
+{
+  def PhysicsScene "physicsScene"
+  {
+    uniform vector3f physics:gravityDirection = (0, 0, -1)
+    float physics:gravityMagnitude = 9.81
+  }
+  def Xform "hub" (
+    prepend apiSchemas = ["PhysicsArticulationRootAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+  )
+  {
+    float physics:mass = 27.3000
+    bool physics:rigidBodyEnabled = true
+    point3f physics:centerOfMass = (0, 0, 0)
+    def Cylinder "hub_geom" (radius = 0.0807, height = 0.0645)
+    {
+      color3f[] primvars:displayColor = [(0.2, 0.2, 0.25)]
+    }
+  }
+  def Xform "ring_L" (
+    prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+  )
+  {
+    float physics:mass = 4.6800
+    bool physics:rigidBodyEnabled = true
+    def PhysicsRevoluteJoint "hinge_L" (
+      prepend apiSchemas = ["PhysicsDriveAPI"]
+    )
+    {
+      rel physics:body0 = </ARW/hub>
+      rel physics:body1 = </ARW/ring_L>
+      point3f physics:localPos0 = (0, 0, 0)
+      point3f physics:localPos1 = (0, 0, 0)
+      quatf physics:localRot0 = (1, 0, 0, 0)
+      quatf physics:localRot1 = (1, 0, 0, 0)
+      point3f physics:axis = (0, 1, 0)
+      float physics:lowerLimit = -0.43633
+      float physics:upperLimit = 0.43633
+      float drive:stiffness = 8000
+      float drive:damping = 400
+    }
+    def Torus "ring_tube_L" (majorRadius = 1.1000, minorRadius = 0.02)
+    {
+      color3f[] primvars:displayColor = [(0.35, 0.35, 0.4)]
+    }
+  }
+  def Xform "ring_R" (
+    prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+  )
+  {
+    float physics:mass = 4.6800
+    bool physics:rigidBodyEnabled = true
+    def PhysicsRevoluteJoint "hinge_R" (
+      prepend apiSchemas = ["PhysicsDriveAPI"]
+    )
+    {
+      rel physics:body0 = </ARW/hub>
+      rel physics:body1 = </ARW/ring_R>
+      point3f physics:localPos0 = (0, 0, 0)
+      point3f physics:localPos1 = (0, 0, 0)
+      quatf physics:localRot0 = (1, 0, 0, 0)
+      quatf physics:localRot1 = (1, 0, 0, 0)
+      point3f physics:axis = (0, 1, 0)
+      float physics:lowerLimit = -0.43633
+      float physics:upperLimit = 0.43633
+      float drive:stiffness = 8000
+      float drive:damping = 400
+    }
+    def Torus "ring_tube_R" (majorRadius = 1.1000, minorRadius = 0.02)
+    {
+      color3f[] primvars:displayColor = [(0.35, 0.35, 0.4)]
+    }
+  }
+  over "ring_L"
+  {
+    def Xform "nacelle_L01" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (-1.45000, 0.00000, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_L01"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_L"
+  {
+    def Xform "nacelle_L02" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (-0.64400, 0.00000, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_L02"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_L"
+  {
+    def Xform "nacelle_L03" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (-1.04700, 0.69800, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_L03"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_L"
+  {
+    def Xform "nacelle_L04" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (-1.85300, 0.69800, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_L04"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_L"
+  {
+    def Xform "nacelle_L05" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (-2.25600, 0.00000, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_L05"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_L"
+  {
+    def Xform "nacelle_L06" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (-1.85300, -0.69800, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_L06"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_L"
+  {
+    def Xform "nacelle_L07" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (-1.04700, -0.69800, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_L07"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_L"
+  {
+    def Xform "nacelle_L08" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (0.04720, 0.40120, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_L08"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_L"
+  {
+    def Xform "nacelle_L09" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (-0.35400, 1.09600, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_L09"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_L"
+  {
+    def Xform "nacelle_L10" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (-1.04880, 1.49720, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_L10"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_L"
+  {
+    def Xform "nacelle_L11" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (-1.85120, 1.49720, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_L11"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_L"
+  {
+    def Xform "nacelle_L12" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (-2.54600, 1.09600, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_L12"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_L"
+  {
+    def Xform "nacelle_L13" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (-2.94720, 0.40120, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_L13"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_L"
+  {
+    def Xform "nacelle_L14" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (-2.94720, -0.40120, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_L14"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_L"
+  {
+    def Xform "nacelle_L15" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (-2.54600, -1.09600, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_L15"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_L"
+  {
+    def Xform "nacelle_L16" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (-1.85120, -1.49720, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_L16"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_L"
+  {
+    def Xform "nacelle_L17" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (-1.04880, -1.49720, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_L17"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_L"
+  {
+    def Xform "nacelle_L18" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (-0.35400, -1.09600, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_L18"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_L"
+  {
+    def Xform "nacelle_L19" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (0.04720, -0.40120, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_L19"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_R"
+  {
+    def Xform "nacelle_R01" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (1.45000, 0.00000, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_R01"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_R"
+  {
+    def Xform "nacelle_R02" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (2.25600, 0.00000, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_R02"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_R"
+  {
+    def Xform "nacelle_R03" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (1.85300, 0.69800, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_R03"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_R"
+  {
+    def Xform "nacelle_R04" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (1.04700, 0.69800, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_R04"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_R"
+  {
+    def Xform "nacelle_R05" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (0.64400, 0.00000, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_R05"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_R"
+  {
+    def Xform "nacelle_R06" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (1.04700, -0.69800, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_R06"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_R"
+  {
+    def Xform "nacelle_R07" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (1.85300, -0.69800, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_R07"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_R"
+  {
+    def Xform "nacelle_R08" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (2.94720, 0.40120, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_R08"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_R"
+  {
+    def Xform "nacelle_R09" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (2.54600, 1.09600, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_R09"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_R"
+  {
+    def Xform "nacelle_R10" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (1.85120, 1.49720, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_R10"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_R"
+  {
+    def Xform "nacelle_R11" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (1.04880, 1.49720, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_R11"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_R"
+  {
+    def Xform "nacelle_R12" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (0.35400, 1.09600, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_R12"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_R"
+  {
+    def Xform "nacelle_R13" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (-0.04720, 0.40120, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_R13"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_R"
+  {
+    def Xform "nacelle_R14" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (-0.04720, -0.40120, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_R14"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_R"
+  {
+    def Xform "nacelle_R15" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (0.35400, -1.09600, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_R15"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_R"
+  {
+    def Xform "nacelle_R16" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (1.04880, -1.49720, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_R16"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_R"
+  {
+    def Xform "nacelle_R17" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (1.85120, -1.49720, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_R17"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_R"
+  {
+    def Xform "nacelle_R18" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (2.54600, -1.09600, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_R18"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+  over "ring_R"
+  {
+    def Xform "nacelle_R19" (
+      prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+      double3 xformOp:translate = (2.94720, -0.40120, 0.00000)
+      uniform token[] xformOpOrder = ["xformOp:translate"]
+    )
+    {
+      float physics:mass = 0.4500
+      bool physics:rigidBodyEnabled = true
+      def Cylinder "nacelle_geom" (radius = 0.2160, height = 0.0648)
+      {
+        color3f[] primvars:displayColor = [(0.1, 0.55, 0.85)]
+      }
+      def Xform "rotor_visual_R19"
+      {
+        def Disk "disk" (radius = 0.2160)
+        {
+          color3f[] primvars:displayColor = [(0.85, 0.85, 0.9)]
+          custom bool arw:visualSpinOnly = true
+        }
+      }
+    }
+  }
+}
