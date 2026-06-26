@@ -1,7 +1,10 @@
 """Co-sim bridge stub — license boundary to proprietary WQP allocator.
 
-The open twin exposes this interface only. The real ACCA WQP allocator runs
-off-board on Jetson / nox-ecs and connects over ardupilot-bridge.
+Open the bits, protect the atoms: this repo ships the interface only.
+The real ACCA constrained allocator runs off-board (Jetson / nox-ecs) and
+connects over ardupilot-bridge. The open twin uses pseudo-inverse reference
+allocation in-process for sim and RL; production co-sim swaps in the
+proprietary stack behind this boundary.
 """
 from __future__ import annotations
 

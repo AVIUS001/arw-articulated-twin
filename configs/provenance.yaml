@@ -73,11 +73,17 @@ parameters:
     provenance: Modeled
     source: Reference hinge travel for public twin
 
+  - name: yaw_drag_ratio_kappa
+    value: 0.10
+    unit: m
+    provenance: Modeled
+    source: k_Q/k_T at datasheet nominal (15.8 N·m / 157 N); reaction-drag yaw arm in B(q_art)
+
   - name: B_spread_k
     value: 0.62
     unit: ""
-    provenance: Modeled
-    source: Generic articulation authority coupling
+    provenance: Deprecated
+    source: Superseded by unit-thrust force model in effectiveness.py (ignored at runtime)
 
   - name: ARW19_mass
     value: 19.2
